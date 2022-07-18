@@ -14,10 +14,8 @@
 //#include <SDL2/SDL.h>
 #endif
 
-struct Vertex
-{
-    float x, y, z;
-};
+#include "defines.h"
+#include "vertex_buffer.h"
 
 
 int main(int argc, char *argv[]) {
@@ -37,7 +35,7 @@ int main(int argc, char *argv[]) {
     window = SDL_CreateWindow("C++ OpenGL Tut", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_OPENGL);
     SDL_GLContext glContext = SDL_GL_CreateContext(window);
 
-    // init Glew
+    // init Glew -> Funktionszeiger initialisieren
     GLenum err = glewInit();
     if (err != GLEW_OK)
     {
@@ -56,21 +54,19 @@ int main(int argc, char *argv[]) {
     };
     uint32_t numVertices = 3;
 
-    GLuint vertexBuffer;
-    // Buffer auf GPU-Speicher schieben
-    glGenBuffers(1, &vertexBuffer);
-    //std::cout << vertexBuffer << std::endl;
-    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-    glBufferData(GL_ARRAY_BUFFER, numVertices * sizeof(Vertex), vertices, GL_STATIC_DRAW);
-
-    // OpenGL Datentyp übergeben
-    glEnableVertexAttribArray(0);
+    Vertex_Buffer vertexBuffer(vertices, numVertices);
+    //vertexBuffer.unbind();
 
     bool close = false;
     while (!close)
     {
+        // Hintergrundfarbe
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        vertexBuffer.bind();
+        // 3D-Objekt zeichnen
+        glDrawArrays(GL_TRIANGLES, 0, numVertices);
 
         SDL_GL_SwapWindow(window);
 
