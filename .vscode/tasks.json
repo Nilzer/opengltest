@@ -11,6 +11,8 @@
 				"${file}",
 				"-o",
 				"${fileDirname}/${fileBasenameNoExtension}",
+				"-g",
+				"./shader.cpp",
 				"-lSDL2",
 				"-lSDL2main",
 				"-lGLEW",

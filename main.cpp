@@ -16,6 +16,7 @@
 
 #include "defines.h"
 #include "vertex_buffer.h"
+#include "shader.h"
 
 
 int main(int argc, char *argv[]) {
@@ -56,6 +57,9 @@ int main(int argc, char *argv[]) {
 
     Vertex_Buffer vertexBuffer(vertices, numVertices);
     //vertexBuffer.unbind();
+
+    Shader shader("shaders/basics.vs", "shaders/basics.fs");
+    shader.bind();
 
     bool close = false;
     while (!close)
