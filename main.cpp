@@ -16,6 +16,7 @@
 
 #include "defines.h"
 #include "vertex_buffer.h"
+#include "index_buffer.h"
 #include "shader.h"
 
 
@@ -49,14 +50,27 @@ int main(int argc, char *argv[]) {
 
     // Daten für Vertexbuffer auf GPU-Speicher 
     Vertex vertices[] = {
-        Vertex{-0.5f, -0.5f, 0.0f},
-        Vertex{0.0f, 0.5f, 0.0f},
-        Vertex{0.5f, -0.5f, 0.0f}
+        Vertex{-0.5f, -0.5f, 0.0f,
+        1.0f, 0.0f, 0.0f, 1.0f},
+        Vertex{-0.5f, 0.5f, 0.0f,
+        0.0f, 1.0f, 0.0f, 1.0f},
+        Vertex{0.5f, -0.5f, 0.0f,
+        0.0f, 0.0f, 1.0f, 1.0f},
+        Vertex{0.5f, 0.5f, 0.0f,
+        1.0f, 0.0f, 0.0f, 1.0f}
     };
-    uint32_t numVertices = 3;
+    uint32_t numVertices = 4;
+
+    uint32_t indices[] = {
+        0, 1, 2,
+        1, 2, 3
+    };
+    uint32_t numIndices = 6;
+
+    Index_Buffer indexBuffer(indices, numIndices, sizeof(indices[0]));
 
     Vertex_Buffer vertexBuffer(vertices, numVertices);
-    //vertexBuffer.unbind();
+    vertexBuffer.unbind();
 
     Shader shader("shaders/basics.vs", "shaders/basics.fs");
     shader.bind();
@@ -69,8 +83,11 @@ int main(int argc, char *argv[]) {
         glClear(GL_COLOR_BUFFER_BIT);
 
         vertexBuffer.bind();
+        indexBuffer.bind();
         // 3D-Objekt zeichnen
-        glDrawArrays(GL_TRIANGLES, 0, numVertices);
+        glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT ,0);
+        indexBuffer.unbind();
+        vertexBuffer.unbind();
 
         SDL_GL_SwapWindow(window);
 
