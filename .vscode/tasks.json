@@ -16,7 +16,8 @@
 				"-lSDL2",
 				"-lSDL2main",
 				"-lGLEW",
-				"-lGL"
+				"-lGL",
+				"-D", "_DEBUG"
 			],
 			"options": {
 				"cwd": "${fileDirname}"
