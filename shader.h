@@ -14,6 +14,10 @@ struct Shader
 
     void unbind();
 
+    GLuint getShaderId(){
+        return shaderId;
+    }
+
 private:
     GLuint compile(std::string shaderSource, GLenum type);
 
